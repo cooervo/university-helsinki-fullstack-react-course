@@ -1,62 +1,66 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = (props) => (
-  <>
-    <h1>{props.course}</h1>
-  </>
-);
-
-const Part = props => (
-  <>
-    <p>
-      {props.part.name} {props.part.exercises}
-    </p>
-  </>
-);
-
-const Content = props => (
-  <>
-    <Part part={props.parts[0]} />
-    <Part part={props.parts[1]} />
-    <Part part={props.parts[2]} />
-  </>
-);
-
-const Total = props => {
-  const t = props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises;
-  return (
-    <>
-      <p>Number of exercises {t}</p>
-    </>
-  );
-}
-
-const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+const Feedback = (props) => {
+  console.log("props1", props)
+  const setToGood = () => {
+    props.setGood(props.good + 1)
   };
+  const setToNeutral = () => {
+    props.setNeutral(props.neutral + 1)
+  };
+  const setToBad = () => {
+    props.setBad(props.bad + 1)
+  };
+
   return (
-    <>
-      <Header course={course.name}/>
-      <Content parts={course.parts}/>
-      <Total parts={course.parts}/>
-    </>
+    <div>
+      <h1>give feedback</h1>
+      <button onClick={() => setToGood()}>good</button>
+      <button onClick={() => setToNeutral()}>neutral</button>
+      <button onClick={() => setToBad()}>bad</button>
+    </div>
   );
 };
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+const Statistics = ({good, neutral, bad}) => {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <p>good: <span>{good}</span></p>
+      <p>neutral: <span>{neutral}</span></p>
+      <p>bad: <span>{bad}</span></p>
+    </div>
+  );
+};
+
+const App = () => {
+  // save clicks of each button to own state
+
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+
+  return (
+    <div>
+      <Feedback
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        setGood={setGood}
+        setNeutral={setNeutral}
+        setBad={setBad}
+      />
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+      />
+    </div>
+  );
+};
+
+ReactDOM.render(<App/>,
+  document.getElementById('root')
+);
