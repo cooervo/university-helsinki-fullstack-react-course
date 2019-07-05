@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 
 const Feedback = (props) => {
-  console.log("props1", props)
   const setToGood = () => {
     props.setGood(props.good + 1)
   };
@@ -14,23 +13,29 @@ const Feedback = (props) => {
   };
 
   return (
-    <div>
+    <>
       <h1>give feedback</h1>
       <button onClick={() => setToGood()}>good</button>
       <button onClick={() => setToNeutral()}>neutral</button>
       <button onClick={() => setToBad()}>bad</button>
-    </div>
+    </>
   );
 };
 
 const Statistics = ({good, neutral, bad}) => {
+  const all = good + neutral + bad;
+  const average = ((good - bad)/all || 0);
+  const positiveAverage = (good/all || 0);
   return (
-    <div>
+    <>
       <h1>statistics</h1>
       <p>good: <span>{good}</span></p>
       <p>neutral: <span>{neutral}</span></p>
       <p>bad: <span>{bad}</span></p>
-    </div>
+      <p>all: <span>{all}</span></p>
+      <p>average: <span>{average}</span></p>
+      <p>positive: <span>{positiveAverage} %</span></p>
+    </>
   );
 };
 
@@ -43,7 +48,7 @@ const App = () => {
 
 
   return (
-    <div>
+    <>
       <Feedback
         good={good}
         neutral={neutral}
@@ -57,7 +62,7 @@ const App = () => {
         neutral={neutral}
         bad={bad}
       />
-    </div>
+    </>
   );
 };
 
