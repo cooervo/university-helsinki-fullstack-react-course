@@ -2,10 +2,11 @@ import React from 'react';
 import Part from './Part';
 
 const Total = ({parts}) => {
-  let totalExercises = 0;
-  parts.forEach(p => {
-    totalExercises = p.exercises + totalExercises;
-  });
+  let totalExercises =
+    // get array of field exercises only
+    parts.map(p => p.exercises)
+      // return the sum of all exercises
+      .reduce((s, p) => s + p);
 
   return (
     <p>
