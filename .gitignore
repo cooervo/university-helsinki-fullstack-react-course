@@ -1,5 +1,6 @@
 .idea/
 playground/
+playground-backend/
 /node_modules
 .DS_Store
 
