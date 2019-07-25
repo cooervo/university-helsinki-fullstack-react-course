@@ -6,7 +6,8 @@ import personsService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newPerson, setNewPerson] = useState('');
+  const [newName, setNewName] = useState('');
+  const [newNumber, setNewNumber] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -31,24 +32,22 @@ const App = () => {
     />
   );
 
-  const handlePersonChange = (event) => {
-    setNewPerson(event.target.value);
-  };
+  const handleNameChange = evt => setNewName(evt.target.value);
+  const handleNumberChange = (event) => setNewNumber(event.target.value);
 
   const addPerson = e => {
     e.preventDefault();
     const person = {
-      name: newPerson,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5,
-      id: persons.length + 1,
+      name: newName,
+      number: newNumber,
     };
 
     personsService
       .create(person)
       .then(data => {
+        debugger
         setPersons(persons.concat(data));
-        setNewPerson('');
+        // todo needed? setNewPerson('');
       });
   };
 
@@ -88,10 +87,20 @@ const App = () => {
         {rows()}
       </ul>
       <form onSubmit={addPerson}>
-        <input
-          value={newPerson}
-          onChange={handlePersonChange}
-        />
+        <div>
+          <label>Name: </label>
+          <input
+            value={newName}
+            onChange={handleNameChange}
+          />
+        </div>
+        <div>
+          <label>Number: </label>
+          <input
+            value={newNumber}
+            onChange={handleNumberChange}
+          />
+        </div>
         <button type="submit">save</button>
       </form>
 
