@@ -1,15 +1,19 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
+const database = require('./database');
+const Person = require('./models/Person');
+require('dotenv').config();
+app.use(cors());
 
+database.connectDatabase();
 app.use(express.static('build'))
 
 app.use(bodyParser.json());
-const cors = require('cors');
 
-app.use(cors());
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method);
@@ -20,33 +24,6 @@ const requestLogger = (request, response, next) => {
 };
 
 app.use(requestLogger);
-
-let persons = [
-  {
-    name: 'Arto Hellas',
-    number: '040-123456',
-    important: true,
-    id: 1
-  },
-  {
-    name: 'Ada Lovelace',
-    important: true,
-    number: '300',
-    id: 4
-  },
-  {
-    name: 'Dan Abramov',
-    important: false,
-    number: '400',
-    id: 3
-  },
-  {
-    name: 'Mary Poppendieck',
-    important: false,
-    number: '500',
-    id: 5
-  },
-];
 
 // middleware
 app.use(bodyParser.json());
@@ -68,7 +45,7 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons);
+  Person.getAllPersons(res)
 });
 
 const getRandomId = () => {
