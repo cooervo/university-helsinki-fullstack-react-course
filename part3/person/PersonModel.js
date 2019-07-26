@@ -6,14 +6,14 @@ const personSchema = new mongoose.Schema({
   date: Date,
   important: Boolean,
 });
-const Person = mongoose.model('Person', personSchema);
+const PersonModel = mongoose.model('Person', personSchema);
 
 const getAllPersons = cb => {
-  Person.find({}).then(cb);
+  PersonModel.find({}).then(cb);
 };
 
 const savePerson = (personData, cb) => {
-  const person = new Person({
+  const person = new PersonModel({
     name: personData.name,
     number: personData.number,
     date: new Date().toISOString(),
@@ -23,9 +23,15 @@ const savePerson = (personData, cb) => {
   person.save().then(cb);
 };
 
+const deleteById = (id, cb) => {
+  PersonModel.findByIdAndRemove(id)
+    .then(cb)
+    .catch(error => {})
+}
 module.exports = {
-  Person,
+  PersonModel,
   getAllPersons,
+  deleteById,
   savePerson
 };
 

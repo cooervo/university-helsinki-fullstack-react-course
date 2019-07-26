@@ -6,14 +6,14 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const database = require('./database');
-const Person = require('./models/Person');
+const PersonRoutes = require('./person/PersonRoutes');
 require('dotenv').config();
-app.use(cors());
 
 database.connectDatabase();
+app.use(bodyParser.json());
+app.use(cors());
 app.use(express.static('build'));
 
-app.use(bodyParser.json());
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method);
@@ -44,60 +44,7 @@ app.get('/info', (req, res) => {
 `);
 });
 
-app.get('/api/persons', (req, res) => {
-  const respondWithPersons = result => res.json(result);
-  Person.getAllPersons(respondWithPersons);
-});
-
-app.post('/api/persons', (req, res) => {
-  const body = req.body;
-  console.log('bodybodybodybody', body)
-  if (!body.name || !body.number) {
-    return res.status(400).json({
-      error: 'name or number missing'
-    });
-  }
-
-  Person.getAllPersons(persons => {
-    const personData = {
-      name: body.name,
-      number: body.number,
-    };
-
-    const personExists = persons.filter(p => p.name === personData.name).length > 0;
-    if (personExists) {
-      return res.status(400).json({
-        error: `Person with name ${personData.name} already exist, try with a different name`
-      });
-    }
-
-    persons = [...persons, personData];
-    Person.savePerson(personData, dbResponse => {
-      console.log('Person.savePerson -> dbResponse', dbResponse);
-      console.log(`added ${personData.name} number ${personData.number} to phonebook`);
-      res.json(dbResponse)
-    });
-
-  });
-
-});
-
-app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find(p => p.id === id);
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
-});
-
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter(p => p.id !== id);
-  res.status(204).end();
-});
-
+PersonRoutes.initRoutes(app)
 const unknownEndpoint = (request, response) => {
   response.status(404).send({error: 'unknown endpoint'});
 };
