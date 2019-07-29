@@ -1,9 +1,26 @@
 const PersonModel = require('./PersonModel');
 
 const initRoutes = app => {
+
+  app.get('/info', (req, res) => {
+    PersonModel.getAllPersons(persons => {
+      res.send(`
+        <p>Phonebook has info for ${persons.length} people</p>
+        <p>${new Date()}</p>
+      `);
+    });
+  });
+
   app.get('/api/persons', (req, res) => {
     const respondWithPersons = result => res.json(result);
     PersonModel.getAllPersons(respondWithPersons);
+  });
+
+  app.get('/api/persons/:id', (req, res) => {
+    const id = req.params.id;
+    PersonModel.findPerson(id, foundPerson => {
+      res.json(foundPerson);
+    });
   });
 
   app.post('/api/persons', (req, res) => {
@@ -28,8 +45,6 @@ const initRoutes = app => {
       }
 
       PersonModel.savePerson(personData, dbResponse => {
-        console.log('Person.savePerson -> dbResponse', dbResponse);
-        console.log(`added ${personData.name} number ${personData.number} to phonebook`);
         dbResponse._id = dbResponse._id.toString();
         res.json(dbResponse);
       });
@@ -38,10 +53,16 @@ const initRoutes = app => {
 
   });
 
+  app.put('/api/persons/:id', (req, res) => {
+    PersonModel.updatePerson(req, updatedPerson => {
+      res.json(updatedPerson.toJSON());
+    });
+  });
+
   app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id.toString();
     PersonModel.deleteById(id, result => {
-      res.json(result).status(204).end()
+      res.json(result).status(204).end();
     });
 
   });
