@@ -17,15 +17,26 @@ const AddPerson = ({setPersons, persons}) => {
 
   const handleNameChange = evt => setNewName(evt.target.value);
   const handleNumberChange = (event) => setNewNumber(event.target.value);
+  const personExists = person => persons.find(p => person.name === p.name);
+
   const addPerson = e => {
     e.preventDefault();
     const person = {
       name: newName,
       number: newNumber,
     };
-
-    personsService.createPerson(person)
-      .then(person => setPersons([...persons, person]));
+    const pExists = personExists(person);
+    if (pExists) {
+      personsService.updatePerson(pExists._id, person)
+        .then(updatedPerson => {
+          const index = persons.findIndex(p => p.name === person.name)
+          persons[index] = updatedPerson;
+          setPersons([...persons])
+        });
+    } else {
+      personsService.createPerson(person)
+        .then(person => setPersons([...persons, person]));
+    }
   };
 
   return (
