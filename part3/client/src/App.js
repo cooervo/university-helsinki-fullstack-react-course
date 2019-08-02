@@ -29,13 +29,16 @@ const App = () => {
   return (
     <div>
       <h1>Persons</h1>
-      <Notification message={errorMessage}/>
+      <Notification
+        message={errorMessage}
+        />
       <ul className='persons-list'>
         {personsList()}
       </ul>
       <AddPerson
         persons={persons}
-        setPersons={setPersons}/>
+        setPersons={setPersons}
+        setErrorMessage={setErrorMessage}/>
       <Footer/>
     </div>
   );

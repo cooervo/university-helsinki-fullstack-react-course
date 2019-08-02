@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import personsService from '../services/persons';
 
-const AddPerson = ({setPersons, persons}) => {
+const AddPerson = ({setPersons, persons, setErrorMessage}) => {
 
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -29,13 +29,27 @@ const AddPerson = ({setPersons, persons}) => {
     if (pExists) {
       personsService.updatePerson(pExists._id, person)
         .then(updatedPerson => {
-          const index = persons.findIndex(p => p.name === person.name)
+          const index = persons.findIndex(p => p.name === person.name);
           persons[index] = updatedPerson;
-          setPersons([...persons])
+          setPersons([...persons]);
+        })
+        .catch(error => {
+          setErrorMessage(error.message);
         });
     } else {
       personsService.createPerson(person)
-        .then(person => setPersons([...persons, person]));
+        .then(res => {
+          if (res.errors) {
+            setErrorMessage(res.message);
+            return;
+          }
+
+          const person = res;
+          setPersons([...persons, person]);
+        })
+        .catch(error => {
+          setErrorMessage(error.message);
+        });
     }
   };
 

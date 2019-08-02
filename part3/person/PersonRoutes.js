@@ -25,11 +25,6 @@ const initRoutes = app => {
 
   app.post('/api/persons', (req, res) => {
     const body = req.body;
-    if (!body.name || !body.number) {
-      return res.status(400).json({
-        error: 'name or number missing'
-      });
-    }
 
     PersonModel.getAllPersons(persons => {
       const personData = {
@@ -37,26 +32,28 @@ const initRoutes = app => {
         number: body.number,
       };
 
-      const personExists = persons.filter(p => p.name === personData.name).length > 0;
-      if (personExists) {
-        return res.status(400).json({
-          error: `Person with name ${personData.name} already exist, try with a different name`
+      PersonModel.savePerson(personData,
+        dbResponse => {
+          if (dbResponse.error) {
+            res.json(dbResponse.toJSON()).end();
+          }
+          dbResponse._id = dbResponse._id.toString();
+          res.json(dbResponse);
+        },
+        err => {
+          res.json(err.toJSON()).end();
         });
-      }
-
-      PersonModel.savePerson(personData, dbResponse => {
-        dbResponse._id = dbResponse._id.toString();
-        res.json(dbResponse);
-      });
-
     });
-
   });
 
   app.put('/api/persons/:id', (req, res) => {
-    PersonModel.updatePerson(req, updatedPerson => {
-      res.json(updatedPerson.toJSON());
-    });
+    PersonModel.updatePerson(req,
+      updatedPerson => {
+        res.json(updatedPerson.toJSON());
+      },
+      err => {
+        res.json(err.toJSON());
+      });
   });
 
   app.delete('/api/persons/:id', (req, res) => {
