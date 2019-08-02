@@ -1,5 +1,5 @@
 * App deployed at heroku server: 
-https://helsinki-fullstack-course-2019.herokuapp.com/
+https://fullstack-course.herokuapp.com/
 
 * Local run `node index.js`
 
