@@ -24,3 +24,29 @@ describe('total likes', () => {
     expect(result).toBe(5)
   })
 })
+
+describe('favorite blog', () => {
+  const favBlog = {
+    _id: '1',
+    title: 'Go To Statement Considered Harmful',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    likes: 53,
+    __v: 0
+  };
+  const blogs = [
+    favBlog, {
+      _id: '2',
+      title: 'Blogi blog',
+      author: 'Foo Bar',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 12,
+      __v: 0
+    }
+  ]
+
+  test('retrieve the blog with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    expect(result).toEqual(favBlog)
+  })
+})
