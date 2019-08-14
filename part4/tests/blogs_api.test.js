@@ -33,6 +33,23 @@ describe('blog api tests', () => {
     expect(initBlogsCount + 1).toBe(newBlogsCount)
   });
 
+  test('PUT for updating a blog', async () => {
+    const getBlogs = await api.get('/api/blogs')
+    if(getBlogs.body.length === 0) return;
+
+    // Update the first blog
+    const blog = {
+      'likes': 100,
+    };
+    const firstId = getBlogs.body[0].id
+    const putReqquest = await api.put(`/api/blogs/${firstId}`)
+      .send(blog)
+
+    // check it was updated
+    const afterPutBlog = await api.get('/api/blogs')
+    expect(afterPutBlog.body[0].likes).toBe(blog.likes)
+  });
+
   test('blogs have field id', async () => {
     const res = await api.get('/api/blogs');
     expect(res.body).toBeDefined();
