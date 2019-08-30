@@ -17,7 +17,7 @@ const CreateBlog = (props) => {
       });
 
       if (res.data) {
-        props.setBlogs([...props.blogs, res.data])
+        props.setBlogs([...props.blogs, res.data]);
       }
 
     } catch (e) {
@@ -30,23 +30,15 @@ const CreateBlog = (props) => {
       <h2>Create new</h2>
       <div>
         <label>title:</label>
-        <input type="text"
-               value={title}
-               onChange={e => setTitle(e.target.value)}
-        />
+        <input type="text" value={title} onChange={e => setTitle(e.target.value)}/>
       </div>
       <div>
         <label>author:</label>
-        <input type="text"
-               value={author}
-               onChange={e => setAuthor(e.target.value)}
-        />
+        <input type="text" value={author} onChange={e => setAuthor(e.target.value)}/>
       </div>
       <div>
         <label>url:</label>
-        <input type="text"
-               value={url}
-               onChange={e => setUrl(e.target.value)}/>
+        <input type="text" value={url} onChange={e => setUrl(e.target.value)}/>
       </div>
       <button>create</button>
     </form>

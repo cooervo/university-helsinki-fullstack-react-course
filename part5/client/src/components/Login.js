@@ -12,7 +12,7 @@ const Login = (props) => {
         password: props.password,
       });
 
-      blogService.setUser(user)
+      blogService.setUser(user);
 
       props.setUser(user);
       props.setUsername(props.username);
@@ -22,21 +22,15 @@ const Login = (props) => {
     }
   };
 
-
   return (
     <form onSubmit={handleLogin}>
       <div>
         <label>username</label>
-        <input type="text"
-               value={props.username}
-               onChange={e => props.setUsername(e.target.value)}
-        />
+        <input type="text" value={props.username} onChange={e => props.setUsername(e.target.value)}/>
       </div>
       <div>
         <label>password</label>
-        <input type="password"
-               value={props.password}
-               onChange={e => props.setPassword(e.target.value)}/>
+        <input type="password" value={props.password} onChange={e => props.setPassword(e.target.value)}/>
       </div>
       <button>
         login

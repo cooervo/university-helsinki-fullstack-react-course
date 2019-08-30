@@ -13,10 +13,10 @@ const Blogs = ({blogs, user, setBlogs}) => {
       <h2>Blogs</h2>
       <p>{user.name} logged in <button onClick={loginService.logout}>logout</button></p>
       <ToggleVisibility buttonLabel="new blog">
-      <CreateBlog
-        blogs={blogs}
-        setBlogs={setBlogs}
-      />
+        <CreateBlog
+          blogs={blogs}
+          setBlogs={setBlogs}
+        />
       </ToggleVisibility>
       {blogsList}
     </div>
