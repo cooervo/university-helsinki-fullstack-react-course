@@ -17,6 +17,7 @@ const getTokenFrom = request => {
 };
 
 blogRouter.get('/', async (request, response) => {
+  // exercise states to get only first user's blogs therefore username: 1
   const blogs = await Blog.find({}).populate('user', {username: 1, name: 1});
   response.json(blogs.map(blog => blog.toJSON()));
 });
