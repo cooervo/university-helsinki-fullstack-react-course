@@ -1,11 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {render, cleanup} from '@testing-library/react';
+import {render, cleanup, fireEvent} from '@testing-library/react';
 import SimpleBlog from './SimpleBlog';
 
 afterEach(cleanup);
 
-describe('<Togglable />', () => {
+describe('SimpleBlog ', () => {
   let component, blog;
 
   beforeEach(() => {
@@ -24,5 +24,15 @@ describe('<Togglable />', () => {
   test('likes are rendered', () => {
     const likesEle = component.container.querySelector('.likes');
     expect(likesEle).toHaveTextContent(`blog has ${blog.likes} likes`);
+  });
+
+  test('button is clicked', () => {
+    const clickHandler = jest.fn();
+    component = render(<SimpleBlog blog={blog} onClick={clickHandler}/>);
+
+    const button = component.container.querySelector('.btn');
+    fireEvent.click(button);
+
+    expect(clickHandler.mock.calls.length).toBe(1);
   });
 });
