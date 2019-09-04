@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import Login from './components/Login';
 import Blogs from './components/Blogs';
 import blogService from './services/blogs';
+import {useField} from './hooks';
 
 function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const username = useField('text')
+  const password = useField('password')
+
   const [user, setUser] = useState(null);
   const [blogs, setBlogs] = useState([]);
 
@@ -30,8 +32,6 @@ function App() {
     user={user}
     username={username}
     password={password}
-    setUsername={setUsername}
-    setPassword={setPassword}
     setUser={setUser}/>;
 
   const blogForm = () => <Blogs
