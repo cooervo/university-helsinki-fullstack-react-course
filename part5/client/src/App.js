@@ -5,8 +5,8 @@ import blogService from './services/blogs';
 import {useField} from './hooks';
 
 function App() {
-  const username = useField('text')
-  const password = useField('password')
+  const username = useField('text', '')
+  const password = useField('password', '')
 
   const [user, setUser] = useState(null);
   const [blogs, setBlogs] = useState([]);

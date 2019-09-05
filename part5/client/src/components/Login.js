@@ -21,9 +21,13 @@ const Login = props => {
       console.log('handle login error: ', exception);
     }
   };
+  const handleReset = e => {
+      props.username.onReset();
+      props.password.onReset();
+  };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} onReset={handleReset}>
       <div>
         <label>username</label>
         <input {...props.username} />
@@ -32,8 +36,11 @@ const Login = props => {
         <label>password</label>
         <input {...props.password} />
       </div>
-      <button>
+      <button type='submit'>
         login
+      </button>
+      <button type='reset'>
+        reset
       </button>
     </form>
   );
